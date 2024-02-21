@@ -23,7 +23,7 @@
                 <tr>
                     <td>@book.Id</td>
                     <td>@book.Nom</td>
-                    <td>@book.Auteur</td>
+                    <td>@book.Auteur.Nom</td> 
                     <td>@String.Format("{0:0.00}", book.Prix)</td>
                     <td>
                         @foreach (var genre in book.Genres)
@@ -37,6 +37,7 @@
                     </td>
                 </tr>
             }
+
         </tbody>
     </table>
 </div>
