@@ -32,10 +32,11 @@
     </div>
 
     <div class="input-group">
-        <label asp-for="Auteur">Auteur</label>
-        <input asp-for="Auteur" class="form-control" />
-        <span asp-validation-for="Auteur" class="text-danger"></span>
+        <label asp-for="AuteurId">Auteur</label>
+        <select asp-for="AuteurId" asp-items="@(new SelectList(Model.AllAuteurs,"Id","Nom"))" class="form-control"></select>
+        <span asp-validation-for="AuteurId" class="text-danger"></span>
     </div>
+
 
     <div class="input-group">
         <label asp-for="Prix">Prix</label>

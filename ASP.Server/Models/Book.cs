@@ -15,13 +15,19 @@ namespace ASP.Server.Models
         [Required(ErrorMessage = "Le nom du livre est requis.")]
         public String Nom { get; set; }
 
-        [Required(ErrorMessage = "Le nom de l'auteur est requis.")]
-        public String Auteur { get; set; }
+        [Required]
+        public int AuteurId { get; set; }
+
+        [ForeignKey("AuteurId")]
+        public Auteur Auteur { get; set; }
+
+        [Range(0.01, double.MaxValue, ErrorMessage = "Le prix doit être supérieur à 0.")]
+
         public double Prix { get; set; }
 
         [Required(ErrorMessage = "Le contenu du livre est requis.")]
         public String Contenu { get; set; } 
-        public List<Genre> Genres { get; set; }
+        public IEnumerable<Genre> Genres { get; set; }
         
         public Book() { 
             Genres = new List<Genre>();
