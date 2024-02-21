@@ -4,6 +4,29 @@
     ViewData["Title"] = "Liste des livres";
 }
 
+<style>
+    .action-buttons {
+        display: flex;
+        align-items: center;
+    }
+
+        .action-buttons form {
+            margin-right: 10px; 
+        }
+
+            .action-buttons form:last-child {
+                margin-right: 0;
+            }
+
+    .separator {
+        height: 20px;
+        width: 1px;
+        background-color: #333;
+        margin-right: 10px;
+    }
+</style>
+
+
 <div class="listeBooks">
     <h1>@ViewData["Title"]</h1>
     <table class="table">
@@ -32,9 +55,17 @@
                         }
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@book.Id">Modifier</a> |
-                        <a asp-action="Delete" asp-route-id="@book.Id">Supprimer</a>
+                        <div class="action-buttons">
+                            <form method="get" asp-controller="Book" asp-action="Edit" asp-route-id="@book.Id">
+                                <button type="submit" class="btn btn-primary">Modifier</button>
+                            </form>
+                            <div class="separator"></div>
+                            <form method="post" asp-action="Delete" asp-route-id="@book.Id" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce livre ?')">
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </div>
                     </td>
+
                 </tr>
             }
 
