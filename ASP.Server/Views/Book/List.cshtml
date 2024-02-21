@@ -32,9 +32,11 @@
                         }
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@book.Id">Modifier</a> |
-                        <a asp-action="Delete" asp-route-id="@book.Id">Supprimer</a>
+                        <form method="post" asp-action="Delete" asp-route-id="@book.Id" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce livre ?')">
+                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                        </form>
                     </td>
+
                 </tr>
             }
 

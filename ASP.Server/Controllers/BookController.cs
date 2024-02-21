@@ -73,5 +73,28 @@ namespace ASP.Server.Controllers
             viewModel.AllAuteurs = _libraryDbContext.Auteurs.ToList();
             return View(viewModel);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            // Trouver le livre à supprimer dans la base de données
+            var bookToDelete = _libraryDbContext.Livres.FirstOrDefault(b => b.Id == id);
+
+            // Vérifier si le livre existe
+            if (bookToDelete == null)
+            {
+                return NotFound(); // Retourner une erreur 404 si le livre n'est pas trouvé
+            }
+
+            // Supprimer le livre de la base de données
+            _libraryDbContext.Livres.Remove(bookToDelete);
+            _libraryDbContext.SaveChanges(); // Enregistrer les modifications dans la base de données
+
+            // Rediriger l'utilisateur vers la liste des livres après la suppression
+            return RedirectToAction(nameof(List));
+        }
+
+
     }
 }
