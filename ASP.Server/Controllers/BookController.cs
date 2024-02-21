@@ -8,16 +8,21 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using System.Net.Security;
+using ASP.Server.Dtos;
+using AutoMapper.QueryableExtensions;
+using AutoMapper;
 
 namespace ASP.Server.Controllers
 {
     public class BookController : Controller
     {
         private readonly LibraryDbContext _libraryDbContext;
+        private readonly IMapper _mapper;
 
-        public BookController(LibraryDbContext libraryDbContext)
+        public BookController(LibraryDbContext libraryDbContext, IMapper mapper)
         {
             _libraryDbContext = libraryDbContext;
+            _mapper = mapper;
         }
 
         public ActionResult<IEnumerable<Book>> List()
@@ -161,5 +166,28 @@ namespace ASP.Server.Controllers
             _libraryDbContext.SaveChanges(); 
             return RedirectToAction(nameof(List));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> List([FromQuery] int? selectedAuteurId, [FromQuery] List<int> selectedGenreIds)
+        {
+            var viewModel = new BookFilterViewModel
+            {
+               Books = await _libraryDbContext.Livres
+                                               .Include(b => b.Auteur)
+                                               .Include(b => b.Genres)
+                                               .Where(b => !selectedAuteurId.HasValue || b.Auteur.Id == selectedAuteurId)
+                                               .Where(b => !selectedGenreIds.Any() || b.Genres.Any(g => selectedGenreIds.Contains(g.Id)))
+                                               .ProjectTo<BookListDTo>(_mapper.ConfigurationProvider)
+                                               .ToListAsync(),
+                AvailableAuteurs = await _libraryDbContext.Auteurs.ToListAsync(),
+                AvailableGenres = await _libraryDbContext.Genres.ToListAsync(),
+                SelectedAuteurId = selectedAuteurId,
+                SelectedGenreIds = selectedGenreIds
+            };
+
+            return View(viewModel); 
+        }
+
+
     }
 }
