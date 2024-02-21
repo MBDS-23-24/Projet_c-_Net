@@ -5,6 +5,9 @@ using System.Linq;
 using ASP.Server.Models;
 using ASP.Server.ViewModels;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System;
+using System.Net.Security;
 
 namespace ASP.Server.Controllers
 {
@@ -21,7 +24,7 @@ namespace ASP.Server.Controllers
         {
             var listBooks = _libraryDbContext.Livres
                                              .Include(b => b.Genres)
-                                             .Include(b => b.Auteur) 
+                                             .Include(b => b.Auteur)
                                              .ToList();
             return View(listBooks);
         }
@@ -32,7 +35,7 @@ namespace ASP.Server.Controllers
             var viewModel = new CreateBookViewModel
             {
                 AllGenres = _libraryDbContext.Genres.ToList(),
-                AllAuteurs = _libraryDbContext.Auteurs.ToList() 
+                AllAuteurs = _libraryDbContext.Auteurs.ToList()
             };
             return View(viewModel);
         }
@@ -57,7 +60,7 @@ namespace ASP.Server.Controllers
                 var book = new Book
                 {
                     Nom = viewModel.Nom,
-                    Auteur = auteur, 
+                    Auteur = auteur,
                     Prix = viewModel.Prix,
                     Contenu = viewModel.Contenu,
                     Genres = _libraryDbContext.Genres.Where(genre => viewModel.Genres.Contains(genre.Id)).ToList()
@@ -73,5 +76,76 @@ namespace ASP.Server.Controllers
             viewModel.AllAuteurs = _libraryDbContext.Auteurs.ToList();
             return View(viewModel);
         }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            var book = _libraryDbContext.Livres
+                                        .Include(b => b.Genres)
+                                        .Include(b => b.Auteur)
+                                        .FirstOrDefault(b => b.Id == id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new EditBookViewModel(book)
+            {
+                AllGenres = _libraryDbContext.Genres.ToList(),
+                AllAuteurs = _libraryDbContext.Auteurs.ToList()
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditBookViewModel viewModel)
+        {
+
+            if (ModelState.IsValid)
+
+            {
+                var bookToUpdate = await _libraryDbContext.Livres
+                    .Include(b => b.Genres)
+                    .Include(b => b.Auteur)
+                    .FirstOrDefaultAsync(b => b.Id == viewModel.Id);
+
+                if (bookToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                // Mise à jour des propriétés de base
+                bookToUpdate.Nom = viewModel.Nom;
+                bookToUpdate.Prix = viewModel.Prix;
+                bookToUpdate.Contenu = viewModel.Contenu;
+                var auteur = await _libraryDbContext.Auteurs.FindAsync(viewModel.AuteurId);
+                if (auteur != null)
+                {
+                    bookToUpdate.Auteur = auteur;
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Auteur introuvable.");
+                    return View(viewModel);
+                }
+                if (viewModel.Genres != null && viewModel.Genres.Any())
+                {
+                    var selectedGenres = await _libraryDbContext.Genres
+                                                                 .Where(g => viewModel.Genres.Contains(g.Id))
+                                                                 .ToListAsync();
+                    bookToUpdate.Genres = selectedGenres;
+                }
+
+                await _libraryDbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(List));
+            }
+            viewModel.AllGenres = await _libraryDbContext.Genres.ToListAsync();
+            viewModel.AllAuteurs = await _libraryDbContext.Auteurs.ToListAsync();
+            return RedirectToAction("List");
+        }
+
+
     }
 }
