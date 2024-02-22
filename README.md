@@ -1,13 +1,13 @@
 # Librairiz
 
-# Creation de l'API
+## Creation de l'API
 
 Fonctionnalités développées : 
 1. 
 2.
 3.
 
-# Creation de l'application
+## Creation de l'application
 
 Fonctionnalités développées : 
 1. Une page de garde avec un header contenant le titre de l'application, la liste des livres, et des icônes de navigation
