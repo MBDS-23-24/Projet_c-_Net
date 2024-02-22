@@ -188,6 +188,51 @@ namespace ASP.Server.Controllers
             return View(viewModel); 
         }
 
+        public async Task<IActionResult> Statistics()
+        {
+            // Obtention du nombre total de livres
+            int totalBooks = await _libraryDbContext.Livres.CountAsync();
+
+            // Obtention du nombre de livres par auteur
+            var booksPerAuthor = await _libraryDbContext.Livres
+                .Include(livre => livre.Auteur)
+                .GroupBy(livre => livre.Auteur.Nom)
+                .Select(group => new { Author = group.Key, Count = group.Count() })
+                .ToDictionaryAsync(g => g.Author, g => g.Count);
+
+            // Obtention des statistiques sur le nombre de mots
+            var wordCounts = await _libraryDbContext.Livres
+                .Select(livre => livre.Contenu.Split(new[] { ' ', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length)
+                .ToListAsync();
+
+            var maxWords = wordCounts.Max();
+            var minWords = wordCounts.Min();
+            var averageWords = wordCounts.Average();
+
+            // Calcul de la médiane
+            var orderedWordCounts = wordCounts.OrderBy(x => x).ToList();
+            int middleIndex = orderedWordCounts.Count / 2;
+            var medianWords = orderedWordCounts.Count % 2 != 0
+                ? orderedWordCounts[middleIndex]
+                : (orderedWordCounts[middleIndex - 1] + orderedWordCounts[middleIndex]) / 2.0;
+
+            // Construction du viewModel avec toutes les statistiques
+            var viewModel = new StatisticsViewModel
+            {
+                TotalBooks = totalBooks,
+                BooksPerAuthor = booksPerAuthor,
+                MaxWords = maxWords,
+                MinWords = minWords,
+                AverageWords = averageWords,
+                MedianWords = medianWords
+            };
+
+            return View(viewModel);
+        }
+
+
+
+
 
     }
 }
