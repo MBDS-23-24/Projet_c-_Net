@@ -23,7 +23,7 @@ namespace ASP.Server.Api
 
         // - GetBooks
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BookListDTo>>> GetBooks([FromQuery] int? genreId, [FromQuery] int limit = 10, [FromQuery] int offset = 0)
+        public async Task<ActionResult<IEnumerable<BookWithoutContentDto>>> GetBooks([FromQuery] int? genreId, [FromQuery] int limit = 10, [FromQuery] int offset = 0)
         {
             // Ici je verifie la validité pour  offset et limit
             if (offset < 0 || limit > 100)
@@ -45,7 +45,7 @@ namespace ASP.Server.Api
             var books = booksQuery.Skip(offset).Take(limit).ToList();
 
             // Mappage des livres vers BookListDTo
-            var booksDtos = mapper.Map<List<BookListDTo>>(books);
+            var booksDtos = mapper.Map<List<BookWithoutContentDto>>(books);
 
             int totalBooks = booksQuery.Count();
 

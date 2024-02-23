@@ -12,12 +12,12 @@ namespace ASP.Server
     {
         public MappingProfile()
         {
-            CreateMap<Book, BookDto>()
-                .ForMember(dest => dest.AuteurNom, opt => opt.MapFrom(src => src.Auteurs.Select(a => a.Nom).ToList()));
+        
+            CreateMap<Book, BookDto>();
+            CreateMap<Auteur, AuteurDto>();
             CreateMap<Genre, GenreDTo>();
-            CreateMap<Book, BookListDTo>()
-                .ForMember(dest => dest.AuteurNom, opt => opt.MapFrom(src => src.Auteurs.FirstOrDefault().Nom))
-                .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.Genres.Select(g => g.Nom)));
+            CreateMap<Book, BookWithoutContentDto>();
+
         }
     }
 
