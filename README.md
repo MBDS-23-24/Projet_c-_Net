@@ -1,3 +1,24 @@
+# Librairiz
+
+## Creation de l'API
+
+Fonctionnalités développées : 
+1. 
+2.
+3.
+
+## Creation de l'application
+
+Fonctionnalités développées : 
+1. Une page de garde avec un header contenant le titre de l'application, la liste des livres, et des icônes de navigation
+2. Des appels vers l'API pour récupérer les données suivantes : la liste des livres, les détails d'un livre spécifique, et la lecture du livre demandé
+3. Des boutons permettant de fluidifier la navigation sur l'application en passant d'une vue à une autre par l'exploitation du "GoBack" dans la navigation
+
+
+____
+
+A SUPPRIMER APRES
+
 # TP .NET
 
 # But

@@ -1,0 +1,74 @@
+﻿@model ASP.Server.ViewModels.StatisticsViewModel
+
+@{
+    ViewData["Title"] = "Statistiques de la Bibliothèque";
+}
+
+<style>
+    .statistics-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+        .statistics-container > * {
+            margin: 5px 0;
+        }
+
+        .statistics-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .statistics-container p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #333;
+        }
+
+    .statistics-list {
+        list-style-type: none; 
+        padding: 0;
+    }
+
+        .statistics-list li {
+            background-color: #e9ecef; 
+            padding: 5px 10px; 
+            margin-bottom: 5px; 
+            border-radius: 5px; 
+        }
+</style>
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+
+    <div class="statistics-container">
+        <h2>Nombre total de livres</h2>
+        <p>@Model.TotalBooks</p>
+    </div>
+
+    <div class="statistics-container">
+        <h2>Livres par Auteur</h2>
+        <ul class="statistics-list">
+            @foreach (var kvp in Model.BooksPerAuthor)
+            {
+                <li>@kvp.Key: @kvp.Value livre(s)</li>
+            }
+        </ul>
+    </div>
+
+    <div class="statistics-container">
+        <h2>Statistiques des Mots</h2>
+        <p>Nombre maximal de mots : @Model.MaxWords</p>
+        <p>Nombre minimal de mots : @Model.MinWords</p>
+        <p>Nombre moyen de mots : @Model.AverageWords.ToString("N0")</p> 
+        <p>Médiane de mots : @Model.MedianWords</p>
+    </div>
+</div>

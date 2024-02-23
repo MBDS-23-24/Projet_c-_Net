@@ -1,16 +1,102 @@
 ﻿@using ASP.Server.Models
-@model IEnumerable<Book>
+@using ASP.Server.ViewModels 
+@model BookFilterViewModel
+
 @{
     ViewData["Title"] = "Liste des livres";
 }
 
+<style>
+    .action-buttons {
+        display: flex;
+        align-items: center;
+    }
+
+        .action-buttons form {
+            margin-right: 10px;
+        }
+
+            .action-buttons form:last-child {
+                margin-right: 0;
+            }
+
+    .separator {
+        height: 20px;
+        width: 1px;
+        background-color: #333;
+        margin-right: 10px;
+    }
+
+    .genres-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+    }
+
+    .form-check-label {
+        margin-left: 5px;
+    }
+
+    .filter-button {
+        margin-left: 20px; 
+    }
+
+    .filter-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; 
+        flex-wrap: wrap; 
+    }
+</style>
+
 <div class="listeBooks">
     <h1>@ViewData["Title"]</h1>
+
+ <form method="get" class="filter-section">
+    <!-- Filtre par auteur -->
+    <div class="form-group">
+        <label for="SelectedAuteurId">Auteur</label>
+        <select asp-for="SelectedAuteurId" asp-items="@(new SelectList(Model.AvailableAuteurs, "Id", "Nom"))" class="form-control">
+            <option value="">Tous les auteurs</option>
+        </select>
+    </div>
+
+    <!-- Filtre par genres -->
+    <div class="form-group">
+        <label>Genres</label>
+        <div class="genres-container">
+            @for (var i = 0; i < Model.AvailableGenres.Count(); i++)
+            {
+                var genre = Model.AvailableGenres.ElementAt(i);
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input"
+                           name="SelectedGenreIds"
+                           value="@genre.Id"
+                    @(Model.SelectedGenreIds.Contains(genre.Id) ? "checked" : "")
+                           id="genre-@genre.Id" />
+                    <label class="form-check-label" for="genre-@genre.Id">@genre.Nom</label>
+                </div>
+            }
+        </div>
+    </div>
+        <div class="filter-button">
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+        </div>
+</form>
+
+
     <table class="table">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Nom</th>
+                <th>Contenu</th>
                 <th>Auteur</th>
                 <th>Prix</th>
                 <th>Genres</th>
@@ -18,22 +104,35 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var book in Model)
+            @foreach (var book in Model.Books) 
             {
                 <tr>
                     <td>@book.Id</td>
                     <td>@book.Nom</td>
-                    <td>@book.Auteur</td>
+                    <td>@book.Contenu</td>
+                    <td>
+                        @foreach (var auteur in book.Auteurs)
+                        {
+                            <span>@auteur.Nom</span>
+                        }
+                    </td>
                     <td>@String.Format("{0:0.00}", book.Prix)</td>
                     <td>
-                        @foreach (var genre in book.Genres)
+                        @foreach (var genreNom in book.Genres)
                         {
-                            <span>@genre.Nom </span>
+                            <span>@genreNom.Nom </span>
                         }
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@book.Id">Modifier</a> |
-                        <a asp-action="Delete" asp-route-id="@book.Id">Supprimer</a>
+                        <div class="action-buttons">
+                            <form method="get" asp-controller="Book" asp-action="Edit" asp-route-id="@book.Id">
+                                <button type="submit" class="btn btn-primary">Modifier</button>
+                            </form>
+                            <div class="separator"></div>
+                            <form method="post" asp-action="Delete" asp-route-id="@book.Id" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce livre ?')">
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             }

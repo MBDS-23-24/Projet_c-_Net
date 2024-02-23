@@ -12,12 +12,13 @@ namespace ASP.Server
     {
         public MappingProfile()
         {
-            // Rajouter autant de ligne ici que vous avez de mapping Model <-> DTO
-            // https://docs.automapper.org/en/latest/
-            CreateMap<Book, BookDto>();
+            CreateMap<Book, BookDto>()
+                .ForMember(dest => dest.AuteurNom, opt => opt.MapFrom(src => src.Auteurs.Select(a => a.Nom).ToList()));
             CreateMap<Genre, GenreDTo>();
             CreateMap<Book, BookListDTo>()
-            .ForMember(dto => dto.Genres, opt => opt.MapFrom(book => book.Genres.Select(g => g.Nom))); ;
+                .ForMember(dest => dest.AuteurNom, opt => opt.MapFrom(src => src.Auteurs.FirstOrDefault().Nom))
+                .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.Genres.Select(g => g.Nom)));
         }
     }
+
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using System.Linq;
 
 namespace ASP.Server.Models
 {
@@ -13,19 +13,21 @@ namespace ASP.Server.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Le nom du livre est requis.")]
-        public String Nom { get; set; }
+        public string Nom { get; set; }
 
-        [Required(ErrorMessage = "Le nom de l'auteur est requis.")]
-        public String Auteur { get; set; }
+        [Range(0.01, double.MaxValue, ErrorMessage = "Le prix doit être supérieur à 0.")]
         public double Prix { get; set; }
 
         [Required(ErrorMessage = "Le contenu du livre est requis.")]
-        public String Contenu { get; set; } 
-        public List<Genre> Genres { get; set; }
-        
-        public Book() { 
-            Genres = new List<Genre>();
-        }   
+        public string Contenu { get; set; }
 
+        public ICollection<Auteur> Auteurs { get; set; } = new List<Auteur>();
+        public ICollection<Genre> Genres { get; set; } = new List<Genre>();
+
+        [NotMapped]
+        public int WordCount
+        {
+            get { return !string.IsNullOrEmpty(Contenu) ? Contenu.Split(new[] { ' ', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length : 0; }
+        }
     }
 }

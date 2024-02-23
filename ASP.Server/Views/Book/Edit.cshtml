@@ -1,8 +1,8 @@
 ﻿@using ASP.Server.ViewModels
-@model CreateBookViewModel
+@model EditBookViewModel
 
 @{
-    ViewData["Title"] = "Ajouter un livre";
+    ViewData["Title"] = "Modifier un livre";
 }
 
 <style>
@@ -24,7 +24,9 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-controller="Book" asp-action="Create" method="post">
+<form asp-controller="Book" asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
     <div class="input-group">
         <label asp-for="Nom">Nom du livre</label>
         <input asp-for="Nom" class="form-control" />
@@ -33,17 +35,11 @@
 
     <div class="input-group">
         <label>Auteurs</label>
-        <div class="form-check-group">
-            @foreach (var auteur in Model.AvailableAuteurs)
-            {
-                <div class="form-check">
-                    <input type="checkbox" name="SelectedAuteurIds" value="@auteur.Id" class="form-check-input" />
-                    <label class="form-check-label">@auteur.Nom</label>
-                </div>
-            }
-
-        </div>
+        <select asp-for="SelectedAuteurIds" asp-items="@(new SelectList(Model.AvailableAuteurs, "Id", "Nom"))" class="form-control" multiple="multiple"></select>
+        <span asp-validation-for="SelectedAuteurIds" class="text-danger"></span>
     </div>
+
+
 
     <div class="input-group">
         <label asp-for="Prix">Prix</label>
@@ -59,11 +55,11 @@
 
     <div class="input-group">
         <label asp-for="SelectedGenreIds">Genres</label>
-        <select asp-for="SelectedGenreIds" asp-items="@(new SelectList(Model.AvailableGenres,"Id","Nom"))" class="form-control" multiple="multiple"></select>
+        <select asp-for="SelectedGenreIds" asp-items="@(new SelectList(Model.AvailableGenres, "Id", "Nom"))" class="form-control" multiple="multiple"></select>
         <span asp-validation-for="SelectedGenreIds" class="text-danger"></span>
     </div>
 
-    <input type="submit" value="Ajouter" class="btn btn-primary" style="margin-top: 20px;" />
+    <input type="submit" value="Enregistrer les modifications" class="btn btn-primary" style="margin-top: 20px;" />
 </form>
 
 @section Scripts {

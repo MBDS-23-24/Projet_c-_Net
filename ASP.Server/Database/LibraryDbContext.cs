@@ -10,6 +10,8 @@ namespace ASP.Server.Database
         }
 
         public DbSet<Book> Livres { get; set; }
+
+        public DbSet<Auteur> Auteurs { get; set; }
         public DbSet<Genre> Genres { get; set; }
     }
 }

@@ -29,8 +29,26 @@ namespace ASP.Server.Database
                 bookDbContext.SaveChanges();
             }
 
+            if (!bookDbContext.Auteurs.Any())
+            {
+                var auteurs = new List<Auteur>
+                {
+                    new Auteur { Nom = "Lionel Vincent" },
+                    new Auteur { Nom = "Mon Ex copine" },
+                    new Auteur { Nom = "Elodie Bantos" },
+                    new Auteur { Nom = "Dounia Zoubid" },
+                    new Auteur { Nom = "Yehoudi Vincent" },
+                    new Auteur { Nom = "Paul Mirabel" },
+                };
+
+                bookDbContext.Auteurs.AddRange(auteurs);
+                bookDbContext.SaveChanges();
+            }
+
+            // Initialisation des livres si nécessaire
             if (!bookDbContext.Livres.Any())
             {
+                // Récupération des genres pour association
                 var SF = bookDbContext.Genres.FirstOrDefault(g => g.Nom == "Science-Fiction");
                 var Classic = bookDbContext.Genres.FirstOrDefault(g => g.Nom == "Classique");
                 var Romance = bookDbContext.Genres.FirstOrDefault(g => g.Nom == "Romance");
@@ -38,14 +56,24 @@ namespace ASP.Server.Database
                 var Fantasy = bookDbContext.Genres.FirstOrDefault(g => g.Nom == "Fantasy");
                 var Horror = bookDbContext.Genres.FirstOrDefault(g => g.Nom == "Horror");
 
+                // Récupération des auteurs pour association
+                var LionelVincent = bookDbContext.Auteurs.FirstOrDefault(a => a.Nom == "Lionel Vincent");
+                var monExCopine = bookDbContext.Auteurs.FirstOrDefault(a => a.Nom == "Mon Ex copine");
+                var elodieBantos = bookDbContext.Auteurs.FirstOrDefault(a => a.Nom == "Elodie Bantos");
+                var douniaZoubid = bookDbContext.Auteurs.FirstOrDefault(a => a.Nom == "Dounia Zoubid");
+                var yehoudiVincent = bookDbContext.Auteurs.FirstOrDefault(a => a.Nom == "Yehoudi Vincent");
+                var paulMirabel = bookDbContext.Auteurs.FirstOrDefault(a => a.Nom == "Paul Mirabel");
+
+
                 var books = new List<Book>
                 {
-                    new Book { Auteur = "Lionel Vincent", Nom = "Foundation", Prix = 15.99, Contenu = "Premier livre de la série Foundation.", Genres = new List<Genre> { SF } },
-                    new Book { Auteur = "Mon Ex copine", Nom = "Foundation and Empire", Prix = 15.99, Contenu = "Deuxième livre de la série Foundation.", Genres = new List<Genre> { Classic } },
-                    new Book { Auteur = "Elodie Bantos", Nom = "Second Foundation", Prix = 15.99, Contenu = "Troisième livre de la série Foundation.", Genres = new List<Genre> { Romance } },
-                    new Book { Auteur = "Dounia Zoubid", Nom = "Foundation's Edge", Prix = 15.99, Contenu = "Quatrième livre de la série Foundation.", Genres = new List<Genre> { Thriller } },
-                    new Book { Auteur = "Yehoudi Vincent", Nom = "Foundation and Earth", Prix = 15.99, Contenu = "Cinquième livre de la série Foundation.", Genres = new List<Genre> { SF } },
-                    new Book { Auteur = "Paul Mirabel", Nom = "Get Out", Prix = 25.99, Contenu = "Ceci est le contenu du film", Genres = new List<Genre> { Fantasy } },
+                    new Book { Nom = "Foundation",Prix = 15.99, Contenu = "Premier livre de la série Foundation.",Genres = new List<Genre> { SF },Auteurs = new List<Auteur> { LionelVincent }},  
+                    new Book { Nom = "Dune",Prix = 19.99, Contenu = "Premier livre de la série Dune.",Genres = new List<Genre> { SF },Auteurs = new List<Auteur> { monExCopine }},
+                    new Book { Nom = "Le Seigneur des Anneaux",Prix = 25.99, Contenu = "Premier livre de la série Le Seigneur des Anneaux.",Genres = new List<Genre> { Fantasy },Auteurs = new List<Auteur> { elodieBantos }},  
+                    new Book { Nom = "Le Hobbit",Prix = 12.99, Contenu = "Premier livre de la série Le Hobbit.",Genres = new List<Genre> { Fantasy },Auteurs = new List<Auteur> { douniaZoubid }},  
+                    new Book { Nom = "Le Nom du Vent",Prix = 18.99, Contenu = "Premier livre de la série Le Nom du Vent.",Genres = new List<Genre> { Fantasy },Auteurs = new List<Auteur> { yehoudiVincent }},  
+                    new Book { Nom = "Le Trône de Fer",Prix = 22.99, Contenu = "Premier livre de la série Le Trône de Fer.",Genres = new List<Genre> { Fantasy },Auteurs = new List<Auteur> { paulMirabel }},   
+                    new Book { Nom = "Le Trône de Fer",Prix = 22.99, Contenu = "Premier livre de la série Le Trône de Fer.",Genres = new List<Genre> { Fantasy },Auteurs = new List<Auteur> { paulMirabel }},   
                 };
 
                 bookDbContext.Livres.AddRange(books);
