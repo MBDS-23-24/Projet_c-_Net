@@ -36,12 +36,12 @@ namespace WPF.Reader.ViewModel
         // Une commande permet de recevoir des évènement de l'IHM
         //RelayCommand permet de prendre une action en paramètre
         //Donc ici, on récupère l'action de l'utilisateur (par exemple, s'il clique sur un bouton) et on détermine le comportement de l'application
-        public ICommand ReadBook2Command { get; init; } = new RelayCommand<Book>(x => { });
+        // public ICommand ReadBook2Command { get; init; } = new RelayCommand<Book>(x => { });
 
-        // Vous pouvez aussi utiliser cette forme pour définir une commande. La ligne du dessus fait strictement la même chose, choisissez une des 2 formes
         [RelayCommand]
-        public void ReadBook(Book book)
+        public void LaunchReadBook(Book book)
         {
+            Ioc.Default.GetService<INavigationService>().Navigate<ReadBook>(this.CurrentBook);
         }
 
         public ICommand GoBackCommand => new RelayCommand(() =>

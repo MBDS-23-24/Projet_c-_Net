@@ -12,17 +12,18 @@
     <Page.Resources>
         <vm:Navigator x:Key="navigator" />
     </Page.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="80" />
-        </Grid.RowDefinitions>
-        <!-- On aimerais bien avoir le tire du livre en entête -->
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+        <TextBlock Text="{Binding CurrentBook.Contenu}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center"/>
 
-        <!-- Ainsi que le contenu du livre ! -->
-        
-        <Button Grid.Row="2" Command="{Binding Path=GoBack, Source={StaticResource ResourceKey=navigator}}" CommandParameter="LIST" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="200" Content="Retourner au details" Margin="0,0,0,27"/>
-    </Grid>
+        <Button 
+            Content="Back"
+            Command="{Binding GoBackCommand}"
+            Margin="5"
+            FontFamily="Times New Roman"
+            Background="Gray"
+            Foreground="Yellow"
+        />
+    </StackPanel>
+    
 </Page>
 
