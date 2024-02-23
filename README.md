@@ -1,20 +1,41 @@
 # Librairiz
 
-## Creation de l'API
+## Création de l'API
 
 Fonctionnalités développées : 
-1. 
-2.
-3.
+1. Récupérer un livre avec son contenu : /book/{id}
+2. Lister les genres disponibles : /genre
+3. Lister les livres sans le contenu
 
-## Creation de l'application
+## Création de l'application Windows
 
 Fonctionnalités développées : 
 1. Une page de garde avec un header contenant le titre de l'application, la liste des livres, et des icônes de navigation
 2. Des appels vers l'API pour récupérer les données suivantes : la liste des livres, les détails d'un livre spécifique, et la lecture du livre demandé
 3. Des boutons permettant de fluidifier la navigation sur l'application en passant d'une vue à une autre par l'exploitation du "GoBack" dans la navigation
 
+## Administration
 
+Fonctionnalités développées : 
+### Un utilisateur peut : 
+1. ajouter des livres dans la bibliothèque
+2. supprimer des livres de la bibliothèque
+3. Consulter la liste de tous les livres
+4. Consulter la liste de tous les genres
+5. Ajouter de nouveaux genres
+6. Modifier un livre existant
+7. Ajouter un livre avec plusieurs auteurs
+8. Filtrer dans la liste des livres par auteur/genre
+9. Voir le nombre total de livre disponible (Interface *Statistiques*)
+10. Voir le nombre de livre par auteur
+11. Le nombre maximum, minmum, median et moyen de mots d'un livre
+
+
+## Contributeurs : 
+1. Yehoudi VINCENT
+2. Dounia ZOUBID
+3. Elodie BANTOS
+4. Abdenour ACHOURI
 ____
 
 A SUPPRIMER APRES
