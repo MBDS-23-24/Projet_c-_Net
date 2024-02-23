@@ -9,7 +9,10 @@ namespace ASP.Server.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
+
+        [Required]
         public string Nom { get; set; }
-        public IEnumerable<Book> Livres { get; set; }
+
+        public ICollection<Book> Livres { get; set; } = new List<Book>();
     }
 }

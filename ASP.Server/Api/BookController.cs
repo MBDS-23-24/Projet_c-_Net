@@ -33,7 +33,7 @@ namespace ASP.Server.Api
 
             var booksQuery = libraryDbContext.Livres
                                              .Include(b => b.Genres)
-                                             .Include(b => b.Auteur)
+                                             .Include(b => b.Auteurs)
                                              .AsEnumerable(); 
 
             if (genreId.HasValue)
@@ -64,7 +64,7 @@ namespace ASP.Server.Api
         {
             var book = libraryDbContext.Livres
                 .Include(b => b.Genres)
-                .Include(b => b.Auteur)
+                .Include(b => b.Auteurs)
                 .FirstOrDefault(b => b.Id == id);
 
             if (book != null)

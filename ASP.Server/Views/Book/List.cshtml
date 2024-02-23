@@ -96,6 +96,7 @@
             <tr>
                 <th>ID</th>
                 <th>Nom</th>
+                <th>Contenu</th>
                 <th>Auteur</th>
                 <th>Prix</th>
                 <th>Genres</th>
@@ -108,12 +109,18 @@
                 <tr>
                     <td>@book.Id</td>
                     <td>@book.Nom</td>
-                    <td>@book.AuteurNom</td>
+                    <td>@book.Contenu</td>
+                    <td>
+                        @foreach (var auteur in book.Auteurs)
+                        {
+                            <span>@auteur.Nom</span>
+                        }
+                    </td>
                     <td>@String.Format("{0:0.00}", book.Prix)</td>
                     <td>
                         @foreach (var genreNom in book.Genres)
                         {
-                            <span>@genreNom </span>
+                            <span>@genreNom.Nom </span>
                         }
                     </td>
                     <td>

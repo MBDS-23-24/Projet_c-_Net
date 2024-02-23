@@ -57,7 +57,7 @@ namespace ASP.Server.Database
                 var Horror = bookDbContext.Genres.FirstOrDefault(g => g.Nom == "Horror");
 
                 // Récupération des auteurs pour association
-                var lionelVincent = bookDbContext.Auteurs.FirstOrDefault(a => a.Nom == "Lionel Vincent");
+                var LionelVincent = bookDbContext.Auteurs.FirstOrDefault(a => a.Nom == "Lionel Vincent");
                 var monExCopine = bookDbContext.Auteurs.FirstOrDefault(a => a.Nom == "Mon Ex copine");
                 var elodieBantos = bookDbContext.Auteurs.FirstOrDefault(a => a.Nom == "Elodie Bantos");
                 var douniaZoubid = bookDbContext.Auteurs.FirstOrDefault(a => a.Nom == "Dounia Zoubid");
@@ -67,12 +67,13 @@ namespace ASP.Server.Database
 
                 var books = new List<Book>
                 {
-                    new Book { Auteur = lionelVincent, Nom = "Foundation", Prix = 15.99, Contenu = "Premier livre de la série Foundation.", Genres = new List<Genre> { Classic } },
-                    new Book { Auteur = lionelVincent, Nom = "Foundation and Empire", Prix = 12.99, Contenu = "Deuxième livre de la série Foundation.", Genres = new List<Genre> { Romance } },
-                    new Book { Auteur = lionelVincent, Nom = "Second Foundation", Prix = 14.99, Contenu = "Troisième livre de la série Foundation.", Genres = new List<Genre> { SF } },
-                    new Book { Auteur = monExCopine, Nom = "La vie après toi", Prix = 9.99, Contenu = "Un livre sur la vie après une rupture.", Genres = new List<Genre> { Romance } },
-                    new Book { Auteur = monExCopine, Nom = "La vie après toi 2", Prix = 9.99, Contenu = "La suite du livre sur la vie après une rupture.", Genres = new List<Genre> { Thriller } },
-
+                    new Book { Nom = "Foundation",Prix = 15.99, Contenu = "Premier livre de la série Foundation.",Genres = new List<Genre> { SF },Auteurs = new List<Auteur> { LionelVincent }},  
+                    new Book { Nom = "Dune",Prix = 19.99, Contenu = "Premier livre de la série Dune.",Genres = new List<Genre> { SF },Auteurs = new List<Auteur> { monExCopine }},
+                    new Book { Nom = "Le Seigneur des Anneaux",Prix = 25.99, Contenu = "Premier livre de la série Le Seigneur des Anneaux.",Genres = new List<Genre> { Fantasy },Auteurs = new List<Auteur> { elodieBantos }},  
+                    new Book { Nom = "Le Hobbit",Prix = 12.99, Contenu = "Premier livre de la série Le Hobbit.",Genres = new List<Genre> { Fantasy },Auteurs = new List<Auteur> { douniaZoubid }},  
+                    new Book { Nom = "Le Nom du Vent",Prix = 18.99, Contenu = "Premier livre de la série Le Nom du Vent.",Genres = new List<Genre> { Fantasy },Auteurs = new List<Auteur> { yehoudiVincent }},  
+                    new Book { Nom = "Le Trône de Fer",Prix = 22.99, Contenu = "Premier livre de la série Le Trône de Fer.",Genres = new List<Genre> { Fantasy },Auteurs = new List<Auteur> { paulMirabel }},   
+                    new Book { Nom = "Le Trône de Fer",Prix = 22.99, Contenu = "Premier livre de la série Le Trône de Fer.",Genres = new List<Genre> { Fantasy },Auteurs = new List<Auteur> { paulMirabel }},   
                 };
 
                 bookDbContext.Livres.AddRange(books);

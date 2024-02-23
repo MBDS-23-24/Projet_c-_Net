@@ -1,4 +1,5 @@
-﻿@model ASP.Server.ViewModels.EditBookViewModel
+﻿@using ASP.Server.ViewModels
+@model EditBookViewModel
 
 @{
     ViewData["Title"] = "Modifier un livre";
@@ -12,7 +13,7 @@
         flex-wrap: wrap;
     }
 
-    input, textarea, select {
+    input, textarea, select, .form-check {
         flex-basis: 85%;
     }
 
@@ -33,10 +34,12 @@
     </div>
 
     <div class="input-group">
-        <label asp-for="AuteurId">Auteur</label>
-        <select asp-for="AuteurId" asp-items="@(new SelectList(Model.AllAuteurs, "Id", "Nom"))" class="form-control"></select>
-        <span asp-validation-for="AuteurId" class="text-danger"></span>
+        <label>Auteurs</label>
+        <select asp-for="SelectedAuteurIds" asp-items="@(new SelectList(Model.AvailableAuteurs, "Id", "Nom"))" class="form-control" multiple="multiple"></select>
+        <span asp-validation-for="SelectedAuteurIds" class="text-danger"></span>
     </div>
+
+
 
     <div class="input-group">
         <label asp-for="Prix">Prix</label>
@@ -51,9 +54,9 @@
     </div>
 
     <div class="input-group">
-        <label asp-for="Genres">Genres</label>
-        <select asp-for="Genres" asp-items="@(new SelectList(Model.AllGenres, "Id", "Nom"))" class="form-control" multiple="multiple"></select>
-        <span asp-validation-for="Genres" class="text-danger"></span>
+        <label asp-for="SelectedGenreIds">Genres</label>
+        <select asp-for="SelectedGenreIds" asp-items="@(new SelectList(Model.AvailableGenres, "Id", "Nom"))" class="form-control" multiple="multiple"></select>
+        <span asp-validation-for="SelectedGenreIds" class="text-danger"></span>
     </div>
 
     <input type="submit" value="Enregistrer les modifications" class="btn btn-primary" style="margin-top: 20px;" />

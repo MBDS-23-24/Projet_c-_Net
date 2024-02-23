@@ -6,7 +6,7 @@ namespace ASP.Server.ViewModels
 {
     public class BookFilterViewModel
     {
-        public IEnumerable<BookListDTo> Books { get; set; }
+        public IEnumerable<Book> Books { get; set; }
         public IEnumerable<Auteur> AvailableAuteurs { get; set; }
         public IEnumerable<Genre> AvailableGenres { get; set; }
         public int? SelectedAuteurId { get; set; }

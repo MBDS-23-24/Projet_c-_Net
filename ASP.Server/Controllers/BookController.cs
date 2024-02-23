@@ -29,7 +29,7 @@ namespace ASP.Server.Controllers
         {
             var listBooks = _libraryDbContext.Livres
                                              .Include(b => b.Genres)
-                                             .Include(b => b.Auteur) 
+                                             .Include(b => b.Auteurs) 
                                              .ToList();
             return View(listBooks);
         }
@@ -39,8 +39,8 @@ namespace ASP.Server.Controllers
         {
             var viewModel = new CreateBookViewModel
             {
-                AllGenres = _libraryDbContext.Genres.ToList(),
-                AllAuteurs = _libraryDbContext.Auteurs.ToList() 
+                AvailableGenres = _libraryDbContext.Genres.ToList(),
+                AvailableAuteurs = _libraryDbContext.Auteurs.ToList() 
             };
             return View(viewModel);
         }
@@ -51,24 +51,13 @@ namespace ASP.Server.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Trouvez l'auteur par ID
-                var auteur = _libraryDbContext.Auteurs.Find(viewModel.AuteurId);
-
-                if (auteur == null)
-                {
-                    ModelState.AddModelError("AuteurId", "Auteur invalide.");
-                    viewModel.AllGenres = _libraryDbContext.Genres.ToList();
-                    viewModel.AllAuteurs = _libraryDbContext.Auteurs.ToList();
-                    return View(viewModel);
-                }
-
                 var book = new Book
                 {
                     Nom = viewModel.Nom,
-                    Auteur = auteur, 
                     Prix = viewModel.Prix,
                     Contenu = viewModel.Contenu,
-                    Genres = _libraryDbContext.Genres.Where(genre => viewModel.Genres.Contains(genre.Id)).ToList()
+                    Genres = _libraryDbContext.Genres.Where(genre => viewModel.SelectedGenreIds.Contains(genre.Id)).ToList(),
+                    Auteurs = _libraryDbContext.Auteurs.Where(auteur => viewModel.SelectedAuteurIds.Contains(auteur.Id)).ToList()
                 };
 
                 _libraryDbContext.Livres.Add(book);
@@ -76,9 +65,8 @@ namespace ASP.Server.Controllers
                 return RedirectToAction(nameof(List));
             }
 
-            // Si le modèle n'est pas valide, retourne à la vue
-            viewModel.AllGenres = _libraryDbContext.Genres.ToList();
-            viewModel.AllAuteurs = _libraryDbContext.Auteurs.ToList();
+            viewModel.AvailableGenres = _libraryDbContext.Genres.ToList();
+            viewModel.AvailableAuteurs = _libraryDbContext.Auteurs.ToList();
             return View(viewModel);
         }
 
@@ -87,17 +75,21 @@ namespace ASP.Server.Controllers
         {
             var book = _libraryDbContext.Livres
                                         .Include(b => b.Genres)
-                                        .Include(b => b.Auteur)
+                                        .Include(b => b.Auteurs)
                                         .FirstOrDefault(b => b.Id == id);
             if (book == null)
             {
                 return NotFound();
             }
 
-            var viewModel = new EditBookViewModel(book)
+            var viewModel = new EditBookViewModel
             {
-                AllGenres = _libraryDbContext.Genres.ToList(),
-                AllAuteurs = _libraryDbContext.Auteurs.ToList()
+                Id = book.Id,
+                Nom = book.Nom,
+                SelectedAuteurIds = book.Auteurs.Select(a => a.Id).ToList(),
+                SelectedGenreIds = book.Genres.Select(g => g.Id).ToList(),
+                AvailableGenres = _libraryDbContext.Genres.ToList(),
+                AvailableAuteurs = _libraryDbContext.Auteurs.ToList(),
             };
 
             return View(viewModel);
@@ -107,13 +99,11 @@ namespace ASP.Server.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditBookViewModel viewModel)
         {
-
             if (ModelState.IsValid)
-
             {
                 var bookToUpdate = await _libraryDbContext.Livres
                     .Include(b => b.Genres)
-                    .Include(b => b.Auteur) 
+                    .Include(b => b.Auteurs)
                     .FirstOrDefaultAsync(b => b.Id == viewModel.Id);
 
                 if (bookToUpdate == null)
@@ -121,34 +111,34 @@ namespace ASP.Server.Controllers
                     return NotFound();
                 }
 
-                // Mise à jour des propriétés de base
                 bookToUpdate.Nom = viewModel.Nom;
                 bookToUpdate.Prix = viewModel.Prix;
                 bookToUpdate.Contenu = viewModel.Contenu;
-                var auteur = await _libraryDbContext.Auteurs.FindAsync(viewModel.AuteurId);
-                if (auteur != null)
+                bookToUpdate.Auteurs.Clear();
+                var selectedAuteurs = await _libraryDbContext.Auteurs
+                                                             .Where(auteur => viewModel.SelectedAuteurIds.Contains(auteur.Id))
+                                                             .ToListAsync();
+                foreach (var auteur in selectedAuteurs)
                 {
-                    bookToUpdate.Auteur = auteur;
+                    bookToUpdate.Auteurs.Add(auteur);
                 }
-                else
+
+                bookToUpdate.Genres.Clear();
+                var selectedGenres = await _libraryDbContext.Genres
+                                                            .Where(genre => viewModel.SelectedGenreIds.Contains(genre.Id))
+                                                            .ToListAsync();
+                foreach (var genre in selectedGenres)
                 {
-                    ModelState.AddModelError("", "Auteur introuvable.");
-                    return View(viewModel);
-                }
-                if (viewModel.Genres != null && viewModel.Genres.Any())
-                {
-                    var selectedGenres = await _libraryDbContext.Genres
-                                                                 .Where(g => viewModel.Genres.Contains(g.Id))
-                                                                 .ToListAsync();
-                    bookToUpdate.Genres = selectedGenres;
+                    bookToUpdate.Genres.Add(genre);
                 }
 
                 await _libraryDbContext.SaveChangesAsync();
                 return RedirectToAction(nameof(List));
             }
-            viewModel.AllGenres = await _libraryDbContext.Genres.ToListAsync();
-            viewModel.AllAuteurs = await _libraryDbContext.Auteurs.ToListAsync();
-            return RedirectToAction("List");
+
+            viewModel.AvailableGenres = await _libraryDbContext.Genres.ToListAsync();
+            viewModel.AvailableAuteurs = await _libraryDbContext.Auteurs.ToListAsync();
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -173,11 +163,9 @@ namespace ASP.Server.Controllers
             var viewModel = new BookFilterViewModel
             {
                Books = await _libraryDbContext.Livres
-                                               .Include(b => b.Auteur)
+                                               .Include(b => b.Auteurs)
                                                .Include(b => b.Genres)
-                                               .Where(b => !selectedAuteurId.HasValue || b.Auteur.Id == selectedAuteurId)
-                                               .Where(b => !selectedGenreIds.Any() || b.Genres.Any(g => selectedGenreIds.Contains(g.Id)))
-                                               .ProjectTo<BookListDTo>(_mapper.ConfigurationProvider)
+                                               .Where(b => !selectedAuteurId.HasValue || b.Auteurs.Any(a => a.Id == selectedAuteurId)).Where(b => !selectedGenreIds.Any() || b.Genres.Any(g => selectedGenreIds.Contains(g.Id)))
                                                .ToListAsync(),
                 AvailableAuteurs = await _libraryDbContext.Auteurs.ToListAsync(),
                 AvailableGenres = await _libraryDbContext.Genres.ToListAsync(),
@@ -193,12 +181,12 @@ namespace ASP.Server.Controllers
             // Obtention du nombre total de livres
             int totalBooks = await _libraryDbContext.Livres.CountAsync();
 
-            // Obtention du nombre de livres par auteur
-            var booksPerAuthor = await _libraryDbContext.Livres
-                .Include(livre => livre.Auteur)
-                .GroupBy(livre => livre.Auteur.Nom)
-                .Select(group => new { Author = group.Key, Count = group.Count() })
-                .ToDictionaryAsync(g => g.Author, g => g.Count);
+ // Obtention du nombre de livres par auteur
+    var booksPerAuthor = await _libraryDbContext.Livres
+        .SelectMany(livre => livre.Auteurs.Select(auteur => new { livre, auteur.Nom }))
+        .GroupBy(la => la.Nom)
+        .Select(group => new { Author = group.Key, Count = group.Count() })
+        .ToDictionaryAsync(g => g.Author, g => g.Count);
 
             // Obtention des statistiques sur le nombre de mots
             var wordCounts = await _libraryDbContext.Livres
