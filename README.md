@@ -1,6 +1,6 @@
 # Librairiz
 
-## Création de l'API
+## API
 
 Fonctionnalités développées : 
 1. Récupérer un livre avec son contenu : /book/{id}
@@ -28,7 +28,7 @@ Fonctionnalités développées :
 11. Le nombre maximum, minmum, median et moyen de mots d'un livre
 
 
-## Création de l'application Windows (WPF.READER)
+## Application Windows (WPF.READER)
 
 Fonctionnalités développées : 
 1. Une page de garde avec un header contenant le titre de l'application, la liste des livres, et des icônes de navigation
