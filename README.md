@@ -6,6 +6,9 @@ Fonctionnalités développées :
 1. Récupérer un livre avec son contenu : /book/{id}
 2. Lister les genres disponibles : /genre
 3. Lister les livres sans le contenu
+   * Le résultat doit est paginé
+   *  La recherche est faite en spécifiant un genre
+   *  La réponse contient un header ayant l'index de début et de fin des livres ainsi que le nombre total de livres
 
 ## Création de l'application Windows
 
