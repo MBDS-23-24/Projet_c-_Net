@@ -10,12 +10,6 @@ Fonctionnalités développées :
    *  La recherche est faite en spécifiant un genre
    *  La réponse contient un header ayant l'index de début et de fin des livres ainsi que le nombre total de livres
 
-## Création de l'application Windows
-
-Fonctionnalités développées : 
-1. Une page de garde avec un header contenant le titre de l'application, la liste des livres, et des icônes de navigation
-2. Des appels vers l'API pour récupérer les données suivantes : la liste des livres, les détails d'un livre spécifique, et la lecture du livre demandé
-3. Des boutons permettant de fluidifier la navigation sur l'application en passant d'une vue à une autre par l'exploitation du "GoBack" dans la navigation
 
 ## Administration
 
@@ -32,6 +26,14 @@ Fonctionnalités développées :
 9. Voir le nombre total de livre disponible (Interface *Statistiques*)
 10. Voir le nombre de livre par auteur
 11. Le nombre maximum, minmum, median et moyen de mots d'un livre
+
+
+## Création de l'application Windows (WPF.READER)
+
+Fonctionnalités développées : 
+1. Une page de garde avec un header contenant le titre de l'application, la liste des livres, et des icônes de navigation
+2. Des appels vers l'API pour récupérer les données suivantes : la liste des livres, les détails d'un livre spécifique, et la lecture du livre demandé
+3. Des boutons permettant de fluidifier la navigation sur l'application en passant d'une vue à une autre par l'exploitation du "GoBack" dans la navigation
 
 
 ## Contributeurs : 
