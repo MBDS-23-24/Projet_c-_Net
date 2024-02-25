@@ -10,7 +10,7 @@ namespace ASP.Server.ViewModels
     public class CreateGenreViewModel
     {
         [Required(ErrorMessage = "Le nom du genre est requis.")]
-        [StringLength(100, ErrorMessage = "Le nom du genre ne doit pas dépasser 100 caractères.")]
+        [StringLength(50, ErrorMessage = "Le nom du genre ne doit pas dépasser 50 caractères.")]
         public string Nom { get; set; }
     }
 }

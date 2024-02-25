@@ -27,5 +27,9 @@ namespace ASP.Server.ViewModels
                 SelectedAuteurIds = book.Auteurs.Select(a => a.Id).ToList();
             }
         }
+        // Prix initial du livre avant modification (pour validation)
+        public double PrixInitial { get; set; }
+        // Contenu initial du livre avant modification (pour validation) 
+        public string ContenuInitial { get; set; }
     }
 }

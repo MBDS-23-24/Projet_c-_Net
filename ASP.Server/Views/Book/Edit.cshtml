@@ -43,15 +43,16 @@
 
     <div class="input-group">
         <label asp-for="Prix">Prix</label>
-        <input asp-for="Prix" class="form-control" />
+        <input asp-for="Prix" class="form-control" value="@Model.PrixInitial" />
         <span asp-validation-for="Prix" class="text-danger"></span>
     </div>
 
     <div class="input-group">
         <label asp-for="Contenu">Contenu</label>
-        <textarea asp-for="Contenu" class="form-control"></textarea>
+        <textarea asp-for="Contenu" class="form-control">@Model.ContenuInitial</textarea>
         <span asp-validation-for="Contenu" class="text-danger"></span>
     </div>
+
 
     <div class="input-group">
         <label asp-for="SelectedGenreIds">Genres</label>

@@ -87,9 +87,15 @@ namespace ASP.Server.Controllers
                 Id = book.Id,
                 Nom = book.Nom,
                 SelectedAuteurIds = book.Auteurs.Select(a => a.Id).ToList(),
+                AvailableAuteurs = _libraryDbContext.Auteurs.ToList(),
+                Prix = book.Prix,
+                //Pour conserver le prix initial du livre lorsqu'il est modifié
+                PrixInitial = book.Prix, 
+                Contenu = book.Contenu, 
+                //Pour conserver le contenu initial du livre lorsqu'il est modifié
+                ContenuInitial = book.Contenu,
                 SelectedGenreIds = book.Genres.Select(g => g.Id).ToList(),
                 AvailableGenres = _libraryDbContext.Genres.ToList(),
-                AvailableAuteurs = _libraryDbContext.Auteurs.ToList(),
             };
 
             return View(viewModel);
@@ -181,7 +187,7 @@ namespace ASP.Server.Controllers
             // Obtention du nombre total de livres
             int totalBooks = await _libraryDbContext.Livres.CountAsync();
 
- // Obtention du nombre de livres par auteur
+    // Obtention du nombre de livres par auteur
     var booksPerAuthor = await _libraryDbContext.Livres
         .SelectMany(livre => livre.Auteurs.Select(auteur => new { livre, auteur.Nom }))
         .GroupBy(la => la.Nom)

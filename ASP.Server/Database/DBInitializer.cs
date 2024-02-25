@@ -45,7 +45,6 @@ namespace ASP.Server.Database
                 bookDbContext.SaveChanges();
             }
 
-            // Initialisation des livres si nécessaire
             if (!bookDbContext.Livres.Any())
             {
                 // Récupération des genres pour association

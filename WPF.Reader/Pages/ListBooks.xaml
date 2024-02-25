@@ -3,7 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:WPF.Reader.Pages"
       xmlns:vm="clr-namespace:WPF.Reader.ViewModel"
       xmlns:model="clr-namespace:WPF.Reader.Model"
       mc:Ignorable="d"
@@ -16,16 +15,26 @@
             <Border Background="#333" Margin="5">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                     <TextBlock Text="{Binding Nom}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center" FontWeight="Bold"/>
-                    <TextBlock Text="{Binding Auteur}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center"/>
+                    <TextBlock Text="Auteurs:" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center"/>
+                    <ItemsControl ItemsSource="{Binding Auteur}" Margin="5">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Nom}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                     <TextBlock Text="{Binding Prix, StringFormat='{}{0:C}'}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center"/>
+                    <TextBlock Text="Genres:" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center"/>
+                    <TextBlock Text="{Binding CurrentBook.Genre}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center"/>
+
                     <Button Content="Details"
-                            Command="{Binding DataContext.ItemSelectedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}"
-                            CommandParameter="{Binding }"
-                            Margin="5"
-                            FontFamily="Times New Roman"
-                            Background="Gray"
-                            Foreground="Yellow"
-                    />
+                        Command="{Binding DataContext.ItemSelectedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}"
+                        CommandParameter="{Binding }"
+                        Margin="5"
+                        FontFamily="Times New Roman"
+                        Background="Gray"
+                        Foreground="Yellow"
+                />
                 </StackPanel>
             </Border>
         </DataTemplate>

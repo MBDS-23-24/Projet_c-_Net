@@ -29,5 +29,6 @@ namespace ASP.Server.Models
         {
             get { return !string.IsNullOrEmpty(Contenu) ? Contenu.Split(new[] { ' ', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length : 0; }
         }
+
     }
 }

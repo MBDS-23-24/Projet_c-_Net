@@ -13,8 +13,13 @@
         <vm:Navigator x:Key="navigator" />
     </Page.Resources>
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-        <TextBlock Text="{Binding CurrentBook.Contenu}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center"/>
-
+        <FlowDocumentScrollViewer VerticalScrollBarVisibility="Auto">
+            <FlowDocument>
+                <Paragraph TextAlignment="Center">
+                    <Run Text="{Binding CurrentBook.Contenu}" Foreground="Yellow" FontFamily="Times New Roman"/>
+                </Paragraph>
+            </FlowDocument>
+        </FlowDocumentScrollViewer>
         <Button 
             Content="Back"
             Command="{Binding GoBackCommand}"
@@ -24,6 +29,4 @@
             Foreground="Yellow"
         />
     </StackPanel>
-    
 </Page>
-

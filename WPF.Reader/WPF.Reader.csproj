@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ASP.Server\ASP.Server.csproj" />
     <ProjectReference Include="..\WPF.Reader.OpenApi\WPF.Reader.OpenApi.csproj" />
   </ItemGroup>
 </Project>

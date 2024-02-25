@@ -44,7 +44,7 @@ namespace ASP.Server.Api
             // Application de la pagination et du filtrage...
             var books = booksQuery.Skip(offset).Take(limit).ToList();
 
-            // Mappage des livres vers BookListDTo
+            // Mappage des livres vers BookWithoutContentDto
             var booksDtos = mapper.Map<List<BookWithoutContentDto>>(books);
 
             int totalBooks = booksQuery.Count();
