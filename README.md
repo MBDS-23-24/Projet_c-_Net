@@ -26,7 +26,7 @@ Fonctionnalités développées :
 8. Filtrer dans la liste des livres par auteur/genre
 9. Voir le nombre total de livre disponible (Interface *Statistiques*)
 10. Voir le nombre de livre par auteur
-11. Le nombre maximum, minmum, median et moyen de mots d'un livre
+11. Voir le nombre maximum, minmum, median et moyen de mots d'un livre
 
 
 ## Application Windows (WPF.READER)
