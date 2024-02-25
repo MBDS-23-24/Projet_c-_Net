@@ -39,7 +39,7 @@ Fonctionnalités développées :
 
 ## Difficultés rencontrés :
 
-Dans la partie *Application Windows*, on n'a pu récupérer les auteurs et les genres pour chaque livre respectif 
+Dans la partie *Application Windows*, on n'a pas pu récupérer les auteurs et les genres pour chaque livre respectif 
 
 
 ## Contributeurs : 
